@@ -40,7 +40,7 @@ void clearStack(void) {
 int main(void) {
     int opc;
     float num;
-    
+    float pi=3.1416;
     for (int i = 0; i < STACK_SIZE; i++)
         stack[i] = 0;
 
@@ -65,9 +65,9 @@ int main(void) {
             case 2:
                 printf("\033[2J");
                 char operacion;
-                printf("Ingrese la operacion que desea realizar: \n");
-                printf("+, -, *, /, r(raizCuadrada), p(potencia), s(seno), c(coseno), t(tangente) ");
-                scanf("%c", &operacion);
+                printf("+, -, *, /, r(raizCuadrada), p(potencia), s(seno), c(coseno), t(tangente) \n");
+                printf("Ingrese la operacion que desea realizar: ");
+                scanf(" %c", &operacion);
                 switch (operacion){
                     case '+':
                     int suma;
@@ -75,15 +75,78 @@ int main(void) {
                     stack[STACK_SIZE - 2]=suma;
                     moveStackDown();
                     break;
+
                     case '-':
                     int resta;
                     resta=stack[STACK_SIZE - 1] - stack[STACK_SIZE - 2];
                     stack[STACK_SIZE - 2]=resta;
                     moveStackDown();
                     break;
+
+                    case '*':
+                    int mult;
+                    mult=stack[STACK_SIZE - 1] * stack[STACK_SIZE - 2];
+                    stack[STACK_SIZE - 2]=mult;
+                    moveStackDown();
+                    break;
+
+                    case '/':
+                    if(stack[STACK_SIZE - 1]=0){
+                        printf("Math error-division por 0");
+                    }
+                    else{
+                    int div;
+                    div=stack[STACK_SIZE - 1] / stack[STACK_SIZE - 2];
+                    stack[STACK_SIZE - 2]=div;
+                    moveStackDown();
+                    }
+                    break;
+
+                    case 'r':
+                    if(stack[STACK_SIZE - 1]<0){
+                        printf("Math error-imaginario");
+                    }
+                    else{
+                    int root;
+                    root=sqrt(stack[STACK_SIZE - 1]);
+                    stack[STACK_SIZE - 1]=root;
+                    }                
+                    break;
+
+                    case 'p':
+                    int pot;
+                    pot=pow(stack[STACK_SIZE - 1] ,stack[STACK_SIZE - 2]);
+                    stack[STACK_SIZE - 2]=pot;
+                    moveStackDown();
+                    break;
+
+                    case 'c':
+                    int cosen;
+                    cosen=cos(stack[STACK_SIZE - 1]*(pi/180)) ;
+                    stack[STACK_SIZE - 2]=cosen;
+                    moveStackDown();
+                    break;
+
+                    case 's':
+                    int seno;
+                    seno=sin(stack[STACK_SIZE - 1]*(pi/180)) ;
+                    stack[STACK_SIZE - 1]=seno;
+                    break;
+
+                    case 't':
+                    float cosenoPrueba=cos(stack[STACK_SIZE - 1]);
+                    if(cosenoPrueba=0){
+                        printf("Math error-tangente asintota");
+                    }
+                    else{
+                    int tangent;
+                    tangent=tan((stack[STACK_SIZE - 1])*(pi/180));
+                    stack[STACK_SIZE - 1]=tangent;
+                    }                
+                    break;    
+
                     default:
-                        printf("Operacion no válida\n");
-                        break;
+                        printf("Opción no válida\n");
                 }
                 break;
             case 3:
@@ -103,6 +166,5 @@ int main(void) {
                 break;
         }
     } while (opc != 5);
-    
     return 0;
 }
