@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <math.h>
+//gcc RPN.c -o RPN -lm
+//./RPN
 #define STACK_SIZE 9
 float stack[STACK_SIZE];
 
@@ -95,8 +97,8 @@ int main(void) {
                         printf("Math error-division por 0");
                     }
                     else{
-                    int div;
-                    div=stack[STACK_SIZE - 1] / stack[STACK_SIZE - 2];
+                    float div;
+                    div=(stack[STACK_SIZE - 1]) / (stack[STACK_SIZE - 2]);
                     stack[STACK_SIZE - 2]=div;
                     moveStackDown();
                     }
