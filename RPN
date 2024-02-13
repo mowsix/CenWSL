@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <math.h>
+#define STACK_SIZE 9
+float stack[STACK_SIZE];
+
+void printStack(void){
+    int i = 0;
+    for ( i = 0; i < 9; i++)
+    {
+        printf("%d", 9 - i);
+        printf(". ");
+        printf("%f", stack[i]);
+        printf("\n");
+    }   
+}
+void moveStackUp(void) {
+    for (int i = 1; i < STACK_SIZE; i++) {
+        stack[i - 1] = stack[i];
+    }
+    stack[STACK_SIZE - 1] = 0; // Vaciar la última posición
+}
+
+
+void moveStackDown(void){
+    for ( int i = 8; i > 0; i--)
+    {
+        stack[i]=stack[i-1];
+    }   
+}
+
+
+void clearStack(void) {
+    for (int i = 0; i < STACK_SIZE; i++) {
+        stack[i] = 0;
+    }
+}
+
+
+
+int main(void) {
+    int opc;
+    float num;
+    
+    for (int i = 0; i < STACK_SIZE; i++)
+        stack[i] = 0;
+
+    printf("--------CALCULADORA RPN------\n");
+    do {
+        printStack();
+        printf("\n");
+        printf("1. Ingresar número\n2. Ingresar operación\n3. Limpiar último\n");
+        printf("4. Eliminar todos\n5. Salir\n");
+        printf("Ingrese su opción: ");
+        scanf("%d", &opc);
+        
+        switch (opc) {
+            case 1:
+                printf("\033[2J"); // Limpiar pantalla
+                printStack();
+                printf("Ingrese el número: ");
+                scanf("%f", &num);
+                moveStackUp(); // Mover los elementos hacia arriba
+                stack[STACK_SIZE - 1] = num; // Colocar el número en la primer posición
+                break;
+            case 2:
+                printf("\033[2J");
+                char operacion;
+                printf("Ingrese la operacion que desea realizar: \n");
+                printf("+, -, *, /, r(raizCuadrada), p(potencia), s(seno), c(coseno), t(tangente) ");
+                scanf("%c", &operacion);
+                switch (operacion){
+                    case '+':
+                    int suma;
+                    suma=stack[STACK_SIZE - 1] + stack[STACK_SIZE - 2];
+                    stack[STACK_SIZE - 2]=suma;
+                    moveStackDown();
+                    break;
+                    case '-':
+                    int resta;
+                    resta=stack[STACK_SIZE - 1] - stack[STACK_SIZE - 2];
+                    stack[STACK_SIZE - 2]=resta;
+                    moveStackDown();
+                    break;
+                    default:
+                        printf("Operacion no válida\n");
+                        break;
+                }
+                break;
+            case 3:
+                stack[STACK_SIZE - 1]=0;
+                moveStackDown();   
+                break;
+            case 4:
+                clearStack();
+                printf("El stack ha sido limpiado");
+                break;
+
+            case 5:
+                printf("Saliendo...\n");
+                break;
+            default:
+                printf("Opción no válida\n");
+                break;
+        }
+    } while (opc != 5);
+    
+    return 0;
+}
