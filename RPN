@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <math.h>
-//gcc RPN.c -o RPN -lm
-//./RPN
 #define STACK_SIZE 9
 float stack[STACK_SIZE];
+/* gcc RPN.c -o RPN -lm
+./RPN */
 
 void printStack(void){
     int i = 0;
@@ -15,14 +15,14 @@ void printStack(void){
         printf("\n");
     }   
 }
+
 void moveStackUp(void) {
     for (int i = 1; i < STACK_SIZE; i++) {
         stack[i - 1] = stack[i];
     }
     stack[STACK_SIZE - 1] = 0; // Vaciar la última posición
 }
-
-
+ 
 void moveStackDown(void){
     for ( int i = 8; i > 0; i--)
     {
@@ -30,19 +30,16 @@ void moveStackDown(void){
     }   
 }
 
-
 void clearStack(void) {
     for (int i = 0; i < STACK_SIZE; i++) {
         stack[i] = 0;
     }
 }
 
-
-
 int main(void) {
     int opc;
     float num;
-    float pi=3.1416;
+    double pi = 3.14159265358979323846;
     for (int i = 0; i < STACK_SIZE; i++)
         stack[i] = 0;
 
@@ -67,6 +64,7 @@ int main(void) {
             case 2:
                 printf("\033[2J");
                 char operacion;
+                printStack();
                 printf("+, -, *, /, r(raizCuadrada), p(potencia), s(seno), c(coseno), t(tangente) \n");
                 printf("Ingrese la operacion que desea realizar: ");
                 scanf(" %c", &operacion);
@@ -80,7 +78,7 @@ int main(void) {
 
                     case '-':
                     int resta;
-                    resta=stack[STACK_SIZE - 1] - stack[STACK_SIZE - 2];
+                    resta=stack[STACK_SIZE - 2] - stack[STACK_SIZE - 1];
                     stack[STACK_SIZE - 2]=resta;
                     moveStackDown();
                     break;
@@ -93,12 +91,12 @@ int main(void) {
                     break;
 
                     case '/':
-                    if(stack[STACK_SIZE - 1]=0){
-                        printf("Math error-division por 0");
+                    if(stack[STACK_SIZE - 1]==0.0){
+                        printf("Math error-division por 0\n");
                     }
                     else{
                     float div;
-                    div=(stack[STACK_SIZE - 1]) / (stack[STACK_SIZE - 2]);
+                    div=((stack[STACK_SIZE - 2]) / (stack[STACK_SIZE - 1]));
                     stack[STACK_SIZE - 2]=div;
                     moveStackDown();
                     }
@@ -106,7 +104,7 @@ int main(void) {
 
                     case 'r':
                     if(stack[STACK_SIZE - 1]<0){
-                        printf("Math error-imaginario");
+                        printf("Math error-imaginario\n");
                     }
                     else{
                     int root;
@@ -117,34 +115,34 @@ int main(void) {
 
                     case 'p':
                     int pot;
-                    pot=pow(stack[STACK_SIZE - 1] ,stack[STACK_SIZE - 2]);
+                    pot=pow(stack[STACK_SIZE - 2] ,stack[STACK_SIZE - 1]);
                     stack[STACK_SIZE - 2]=pot;
                     moveStackDown();
                     break;
 
                     case 'c':
-                    int cosen;
-                    cosen=cos(stack[STACK_SIZE - 1]*(pi/180)) ;
-                    stack[STACK_SIZE - 2]=cosen;
-                    moveStackDown();
+                    float cosen;
+                   
+                    cosen=cos(stack[STACK_SIZE - 1]*(pi/180));
+                    stack[STACK_SIZE - 1]=("%.2f", cosen);    
                     break;
 
                     case 's':
-                    int seno;
-                    seno=sin(stack[STACK_SIZE - 1]*(pi/180)) ;
-                    stack[STACK_SIZE - 1]=seno;
+                    float seno;
+                    
+                    seno=sin(stack[STACK_SIZE - 1]*(pi/180));
+                    stack[STACK_SIZE - 1]= ("%.2f", seno);
                     break;
 
                     case 't':
-                    float cosenoPrueba=cos(stack[STACK_SIZE - 1]);
-                    if(cosenoPrueba=0){
-                        printf("Math error-tangente asintota");
-                    }
-                    else{
-                    int tangent;
-                    tangent=tan((stack[STACK_SIZE - 1])*(pi/180));
-                    stack[STACK_SIZE - 1]=tangent;
-                    }                
+                        float tangente;
+                        cosen=round(cos(stack[STACK_SIZE - 1]*(pi/180))*100)/100;
+                        tangente=(sin(stack[STACK_SIZE - 1]*(pi/180))/cos(stack[STACK_SIZE - 1]*(pi/180)));
+                        if(cosen != 0.00){
+                            stack[STACK_SIZE - 1]= ("%.2f", tangente);
+                        }else{
+                            printf("Math Error - Tangente infinita\n");
+                        }                        
                     break;    
 
                     default:
